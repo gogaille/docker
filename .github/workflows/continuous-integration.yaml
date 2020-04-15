@@ -1,0 +1,26 @@
+name: Continuous Integration
+
+on: pull_request
+
+env:
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  docker:
+    name: Build docker images
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: build php
+        uses: docker/build-push-action@v1
+        with:
+          registry: docker.pkg.github.com
+          repository: gogaille/docker/php
+          add_git_labels: true
+          push: false
+      - name: test
+        run: docker run --rm docker.pkg.github.com/gogaille/docker/php php --version
