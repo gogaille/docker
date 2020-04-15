@@ -1,12 +1,14 @@
-name: Coninuous Deployment
+name: Continuous Deployment
 
 on:
   push:
     branches:
       - master
-      - "7.4"
   schedule:
     - cron: "0 0 * * *"
+  release:
+    types:
+      - published
 
 env:
   DOCKER_BUILDKIT: 1
