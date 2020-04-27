@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:experimental
 FROM curlimages/curl as symfony-cli
 RUN curl --http2 --compressed --location \
-  https://github.com/symfony/cli/releases/download/v4.14.1/symfony_linux_amd64.gz | \
+  https://github.com/symfony/cli/releases/download/v4.14.3/symfony_linux_amd64.gz | \
   gunzip - > /tmp/symfony \
-  && echo "3228f0a8804933a9f065725411abbb7b033563148d1c0b356e6d9da539abeb2e  /tmp/symfony" | sha256sum -cs \
+  && echo "9992c0923d75959625dab89fad717a9a4ef7610155643a59a8ea86693ea8510d  /tmp/symfony" | sha256sum -cs \
   && chmod +x /tmp/symfony
 
 
