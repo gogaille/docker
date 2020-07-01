@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:experimental
 FROM curlimages/curl as symfony-cli
 RUN curl --http2 --compressed --location \
-  https://github.com/symfony/cli/releases/download/v4.16.3/symfony_linux_amd64.gz | \
+  https://github.com/symfony/cli/releases/download/v4.16.4/symfony_linux_amd64.gz | \
   gunzip - > /tmp/symfony \
-  && echo "faabf48df94d168732b2400a43fc57ec23535169f5662b402be6bf1f5311077b  /tmp/symfony" | sha256sum -cs \
+  && echo "a09650c78ac55bab12acd8b124bb1dec79ef155a99bcfb3463d626edc99f1adf  /tmp/symfony" | sha256sum -cs \
   && chmod +x /tmp/symfony
 
 
@@ -26,7 +26,6 @@ RUN apk add --no-cache --virtual .build-deps \
 RUN adduser -u 1001 -D php
 USER php
 COPY --from=symfony-cli /tmp/symfony /usr/local/bin/symfony
-RUN mkdir -p ~/.symfony
 COPY --from=composer:1.10.6 /usr/bin/composer /usr/local/bin/composer
 # buildkit bug: despite uid=1001 in mount type cache... created with uid 0
 RUN mkdir -p ~/.composer
