@@ -26,6 +26,7 @@ RUN apk add --no-cache --virtual .build-deps \
 RUN adduser -u 1001 -D php
 USER php
 COPY --from=symfony-cli /tmp/symfony /usr/local/bin/symfony
+RUN mkdir -p ~/.symfony
 COPY --from=composer:1.10.6 /usr/bin/composer /usr/local/bin/composer
 # buildkit bug: despite uid=1001 in mount type cache... created with uid 0
 RUN mkdir -p ~/.composer
