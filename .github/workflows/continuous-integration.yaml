@@ -7,7 +7,7 @@ env:
 
 jobs:
   php:
-    name: Build and test docker/php image
+    name: Build and test gogaille/php image
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
@@ -24,3 +24,24 @@ jobs:
           push: false
       - name: test
         run: docker run --rm gogaille/php php --version
+  bref:
+    name: Build and test gogaille/bref image
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: build
+        uses: docker/build-push-action@v1
+        with:
+          repository: gogaille/bref
+          path: ./bref
+          tags: latest
+          push: false
+      - name: test
+        run: |
+          docker run --rm gogaille/bref php --version
+          docker run --rm gogaille/bref composer --version
+          docker run --rm gogaille/bref php-cs-fixer --version
