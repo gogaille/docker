@@ -8,3 +8,4 @@ ENV PATH=$PATH:/var:/var/task/bin \
   COMPOSER_CACHE_DIR=/composer-cache
 COPY --from=composer:2.0.0-alpha3 /usr/bin/composer /usr/local/bin/composer
 COPY --from=cytopia/php-cs-fixer:2 /usr/bin/php-cs-fixer /usr/local/bin/php-cs-fixer
+COPY --from=bref/extra-blackfire-php-74 /opt/bref-extra/blackfire.so /opt/bref-extra/blackfire.so
