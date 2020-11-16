@@ -3,6 +3,9 @@ USER root
 RUN curl -SsL https://github.com/kvz/json2hcl/releases/download/v0.0.6/json2hcl_v0.0.6_linux_amd64 > /usr/local/bin/json2hcl \
   && chmod 755 /usr/local/bin/json2hcl \
   && json2hcl -version
+RUN curl -SsL https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 > /usr/local/bin/jq \
+  && chmod 755 /usr/local/bin/jq \
+  && jq --version
 RUN mkdir /composer-cache && \
   chmod a+rw /composer-cache && \
   yum install -y zip
