@@ -1,4 +1,4 @@
-FROM bref/php-74-fpm-dev:0.5.31
+FROM bref/php-80-fpm-dev:1.0.0
 USER root
 RUN curl -SsL https://github.com/kvz/json2hcl/releases/download/v0.0.6/json2hcl_v0.0.6_linux_amd64 > /usr/local/bin/json2hcl && \
   chmod 755 /usr/local/bin/json2hcl && \
@@ -13,5 +13,6 @@ USER sbx_user1051
 ENV PATH=$PATH:/var:/var/task/bin \
   COMPOSER_CACHE_DIR=/composer-cache
 COPY --from=composer:2.0.7 /usr/bin/composer /usr/local/bin/composer
-COPY --from=cytopia/php-cs-fixer:2 /usr/bin/php-cs-fixer /usr/local/bin/php-cs-fixer
-COPY --from=bref/extra-redis-php-74:0.5.3 /opt/bref-extra/redis.so /opt/bref-extra/redis.so
+ENV PHP_CS_FIXER_IGNORE_ENV=1
+COPY --from=oskarstark/php-cs-fixer-ga:2.16.7 /usr/local/bin/php-cs-fixer /usr/local/bin/php-cs-fixer
+COPY --from=bref/extra-redis-php-80:0.6.4 /opt/bref-extra/redis.so /opt/bref-extra/redis.so
