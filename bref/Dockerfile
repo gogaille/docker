@@ -14,6 +14,6 @@ ENV PATH=$PATH:/var:/var/task/bin \
   COMPOSER_CACHE_DIR=/composer-cache
 COPY --from=composer:2.0.7 /usr/bin/composer /usr/local/bin/composer
 ENV PHP_CS_FIXER_IGNORE_ENV=1
-COPY --from=oskarstark/php-cs-fixer-ga:2.16.7 /usr/local/bin/php-cs-fixer /usr/local/bin/php-cs-fixer
+COPY --from=oskarstark/php-cs-fixer-ga:2.16.8 /usr/local/bin/php-cs-fixer /usr/local/bin/php-cs-fixer
 COPY --from=bref/extra-redis-php-80:0.7.2 /opt/bref-extra/redis.so /opt/bref-extra/redis.so
 COPY --from=bref/extra-redis-php-80:0.7.2 /opt/bref/etc/php/conf.d/ext-redis.ini /opt/bref/etc/php/conf.d/ext-redis.ini
