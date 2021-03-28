@@ -4,7 +4,8 @@ RUN gem install rake
 
 RUN set -ex \
   && apk add --update nodejs \
-  && apk add --virtual build-base ruby-dev
+  && apk add --virtual build-base ruby-dev \
+  && apk add --no-cache shared-mime-info
 RUN gem install zendesk_apps_tools
 WORKDIR /app
 
