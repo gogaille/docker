@@ -15,26 +15,6 @@ env:
   DOCKER_BUILDKIT: 1
 
 jobs:
-  php:
-    name: build and publish docker/php image
-    runs-on: ubuntu-latest
-    timeout-minutes: 6
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-      - name: build and push
-        uses: docker/build-push-action@v1
-        with:
-          repository: gogaille/php
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          path: ./php
-          push: true
-          tag_with_ref: true
-          tag_with_sha: true
-          add_git_labels: true
   bref:
     name: build and publish gogaille/bref image
     runs-on: ubuntu-latest
