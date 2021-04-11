@@ -9,7 +9,9 @@ RUN curl -SsL https://github.com/kvz/json2hcl/releases/download/v0.0.6/json2hcl_
 
 FROM bref/php-80-fpm-dev:1.2.3
 RUN mkdir /composer-cache && \
-  chmod a+rw /composer-cache
+  chmod a+rw /composer-cache && \
+  yum install -y unzip && \
+  yum clean all
 ENV PATH=$PATH:/var:/var/task/bin \
   COMPOSER_CACHE_DIR=/composer-cache \
   PHP_CS_FIXER_IGNORE_ENV=1
