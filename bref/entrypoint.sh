@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
 
-update-ca-trust force-enable
+[ $(id -u) -eq 0 ] && update-ca-trust force-enable
 
 exec "$@"
