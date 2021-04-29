@@ -15,7 +15,11 @@ RUN mkdir /composer-cache && \
 ENV PATH=$PATH:/var:/var/task/bin \
   COMPOSER_CACHE_DIR=/composer-cache \
   PHP_CS_FIXER_IGNORE_ENV=1
+COPY entrypoint.sh /gogaille-entrypoint.sh
 COPY --from=composer:2.0.12 /usr/bin/composer /usr/local/bin/composer
 COPY --from=dependencies /usr/local/bin/json2hcl /usr/local/bin/jtc /usr/local/bin/
 COPY --from=bref/extra-redis-php-80:0.10.8 /opt/bref-extra/redis.so /opt/bref-extra/redis.so
 COPY --from=bref/extra-redis-php-80:0.10.8 /opt/bref/etc/php/conf.d/ext-redis.ini /opt/bref/etc/php/conf.d/ext-redis.ini
+
+ENTRYPOINT [ "/gogaille-entrypoint.sh" ]
+CMD /opt/bin/php-fpm --nodaemonize --fpm-config /opt/bref/etc/php-fpm.conf -d opcache.validate_timestamps=1 --force-stderr
