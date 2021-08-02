@@ -16,7 +16,7 @@ ENV PATH=$PATH:/var:/var/task/bin \
   COMPOSER_CACHE_DIR=/composer-cache \
   PHP_CS_FIXER_IGNORE_ENV=1
 COPY entrypoint.sh /gogaille-entrypoint.sh
-COPY --from=composer:2.1.3 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.1.5 /usr/bin/composer /usr/local/bin/composer
 COPY --from=dependencies /usr/local/bin/json2hcl /usr/local/bin/jtc /usr/local/bin/
 COPY --from=bref/extra-redis-php-80:0.11.2 /opt/bref-extra/redis.so /opt/bref-extra/redis.so
 COPY --from=bref/extra-redis-php-80:0.11.2 /opt/bref/etc/php/conf.d/ext-redis.ini /opt/bref/etc/php/conf.d/ext-redis.ini
