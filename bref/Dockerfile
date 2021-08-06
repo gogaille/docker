@@ -7,7 +7,7 @@ RUN curl -SsL https://github.com/kvz/json2hcl/releases/download/v0.0.6/json2hcl_
   chmod 755 /usr/local/bin/json2hcl && \
   json2hcl -version
 
-FROM bref/php-80-fpm-dev:1.2.8
+FROM bref/php-80-fpm-dev:1.2.10
 RUN mkdir /composer-cache && \
   chmod a+rw /composer-cache && \
   yum install -y unzip && \
