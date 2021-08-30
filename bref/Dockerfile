@@ -20,6 +20,7 @@ COPY --from=composer:2.1.6 /usr/bin/composer /usr/local/bin/composer
 COPY --from=dependencies /usr/local/bin/json2hcl /usr/local/bin/jtc /usr/local/bin/
 COPY --from=bref/extra-redis-php-80:0.11.14 /opt/bref-extra/redis.so /opt/bref-extra/redis.so
 COPY --from=bref/extra-redis-php-80:0.11.14 /opt/bref/etc/php/conf.d/ext-redis.ini /opt/bref/etc/php/conf.d/ext-redis.ini
-
+# Override the config so that PHP-FPM listens on port 9000
+COPY php-fpm.conf /opt/bref/etc/php-fpm.conf
 ENTRYPOINT [ "/gogaille-entrypoint.sh" ]
 CMD ["/opt/bin/php-fpm", "--nodaemonize", "--fpm-config", "/opt/bref/etc/php-fpm.conf", "-d", "opcache.validate_timestamps=1", "--force-stderr"]
