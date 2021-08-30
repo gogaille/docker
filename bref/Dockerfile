@@ -7,7 +7,7 @@ RUN curl -SsL https://github.com/kvz/json2hcl/releases/download/v0.0.6/json2hcl_
   chmod 755 /usr/local/bin/json2hcl && \
   json2hcl -version
 
-FROM bref/php-80-fpm-dev:1.2.12
+FROM bref/php-80-fpm-dev:1.2.13
 RUN mkdir /composer-cache && \
   chmod a+rw /composer-cache && \
   yum install -y unzip && \
@@ -20,7 +20,5 @@ COPY --from=composer:2.1.6 /usr/bin/composer /usr/local/bin/composer
 COPY --from=dependencies /usr/local/bin/json2hcl /usr/local/bin/jtc /usr/local/bin/
 COPY --from=bref/extra-redis-php-80:0.11.14 /opt/bref-extra/redis.so /opt/bref-extra/redis.so
 COPY --from=bref/extra-redis-php-80:0.11.14 /opt/bref/etc/php/conf.d/ext-redis.ini /opt/bref/etc/php/conf.d/ext-redis.ini
-# Override the config so that PHP-FPM listens on port 9000
-COPY php-fpm.conf /opt/bref/etc/php-fpm.conf
 ENTRYPOINT [ "/gogaille-entrypoint.sh" ]
 CMD ["/opt/bin/php-fpm", "--nodaemonize", "--fpm-config", "/opt/bref/etc/php-fpm.conf", "-d", "opcache.validate_timestamps=1", "--force-stderr"]
