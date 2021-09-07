@@ -8,9 +8,9 @@ RUN curl -SsL https://github.com/kvz/json2hcl/releases/download/v0.0.6/json2hcl_
   chmod 755 /usr/local/bin/json2hcl && \
   json2hcl -version
 
-FROM bref/extra-redis-php-${PHP_VERSION}:0.11.15 AS redis_extension
+FROM bref/extra-redis-php-${PHP_VERSION}:0.11.16 AS redis_extension
 
-FROM bref/php-${PHP_VERSION}-fpm-dev:1.2.13
+FROM bref/php-${PHP_VERSION}-fpm-dev:1.2.14
 RUN mkdir /composer-cache && \
   chmod a+rw /composer-cache && \
   yum install -y unzip && \
