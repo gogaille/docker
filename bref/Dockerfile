@@ -33,7 +33,8 @@ RUN mkdir /composer-cache && \
   yum clean all
 ENV PATH=$PATH:/var:/var/task/bin \
   COMPOSER_CACHE_DIR=/composer-cache \
-  PHP_CS_FIXER_IGNORE_ENV=1
+  PHP_CS_FIXER_IGNORE_ENV=1 \
+  PHIVE_HOME=/tmp/.phive
 COPY entrypoint.sh /gogaille-entrypoint.sh
 COPY --from=composer:2.1.8 /usr/bin/composer /usr/local/bin/composer
 COPY --from=phive /usr/local/bin/phive /usr/local/bin/
