@@ -26,21 +26,3 @@ jobs:
         run: |
           docker run --rm gogaille/bref php --version
           docker run --rm gogaille/bref composer --version
-  zat:
-    name: Build and test gogaille/zat image
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-      - name: build
-        uses: docker/build-push-action@v1
-        with:
-          repository: gogaille/zat
-          path: ./zat
-          tags: latest
-          push: false
-      - name: test
-        run: docker run --rm gogaille/zat zat version
