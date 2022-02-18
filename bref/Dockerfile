@@ -1,8 +1,8 @@
-ARG PHP_VERSION=80
-ARG ALPINE_VERSION=3.14
-ARG BREF_VERSION=1.5.0
+ARG PHP_VERSION=81
+ARG ALPINE_VERSION=3.15
+ARG BREF_VERSION=1.5.3
 
-FROM bref/extra-redis-php-${PHP_VERSION}:0.11.19 AS redis_extension
+FROM bref/extra-redis-php-${PHP_VERSION}:0.11.25 AS redis_extension
 
 FROM alpine:${ALPINE_VERSION} as tools-installer
 RUN apk add --no-cache curl gnupg
@@ -36,7 +36,7 @@ ENV PATH=$PATH:/var:/var/task/bin \
   PHP_CS_FIXER_IGNORE_ENV=1 \
   PHIVE_HOME=/tmp/phive
 COPY entrypoint.sh /gogaille-entrypoint.sh
-COPY --from=composer:2.2.3 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.2.6 /usr/bin/composer /usr/local/bin/composer
 COPY --from=phive /usr/local/bin/phive /usr/local/bin/
 RUN phive --version
 COPY --from=json2hcl /usr/local/bin/json2hcl /usr/local/bin/
