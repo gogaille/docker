@@ -1,6 +1,6 @@
 ARG PHP_VERSION=81
 ARG ALPINE_VERSION=3.16
-ARG BREF_VERSION=1.6.0
+ARG BREF_VERSION=1.7.0
 
 FROM bref/extra-redis-php-${PHP_VERSION}:0.11.32 AS redis_extension
 
@@ -36,7 +36,7 @@ ENV PATH=$PATH:/var:/var/task/bin \
   PHP_CS_FIXER_IGNORE_ENV=1 \
   PHIVE_HOME=/tmp/phive
 COPY entrypoint.sh /gogaille-entrypoint.sh
-COPY --from=composer:2.3.7 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.3.9 /usr/bin/composer /usr/local/bin/composer
 COPY --from=phive /usr/local/bin/phive /usr/local/bin/
 RUN phive --version
 COPY --from=hcl2json /usr/local/bin/hcl2json /usr/local/bin/
