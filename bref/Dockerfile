@@ -1,6 +1,6 @@
 ARG PHP_VERSION=81
 ARG ALPINE_VERSION=3.16
-ARG BREF_VERSION=1.7.1
+ARG BREF_VERSION=1.7.5
 
 FROM bref/extra-redis-php-${PHP_VERSION}:0.11.32 AS redis_extension
 
@@ -19,7 +19,7 @@ RUN curl -SsL https://github.com/ldn-softdev/jtc/releases/download/LatestBuild/j
   jtc -help
 
 FROM tools-installer as phive
-ARG PHIVE_VERSION=0.15.1
+ARG PHIVE_VERSION=0.15.2
 RUN curl -SsL https://github.com/phar-io/phive/releases/download/${PHIVE_VERSION}/phive-${PHIVE_VERSION}.phar > /usr/local/bin/phive && \
   curl -SsL https://github.com/phar-io/phive/releases/download/${PHIVE_VERSION}/phive-${PHIVE_VERSION}.phar.asc > /tmp/phive.phar.asc && \
   gpg --keyserver hkps://keys.openpgp.org --recv-keys 0x6AF725270AB81E04D79442549D8A98B29B2D5D79 && \
@@ -36,7 +36,7 @@ ENV PATH=$PATH:/var:/var/task/bin \
   PHP_CS_FIXER_IGNORE_ENV=1 \
   PHIVE_HOME=/tmp/phive
 COPY entrypoint.sh /gogaille-entrypoint.sh
-COPY --from=composer:2.3.9 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.4 /usr/bin/composer /usr/local/bin/composer
 COPY --from=phive /usr/local/bin/phive /usr/local/bin/
 RUN phive --version
 COPY --from=hcl2json /usr/local/bin/hcl2json /usr/local/bin/
