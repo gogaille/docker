@@ -1,15 +1,15 @@
 ARG PHP_VERSION=81
 ARG ALPINE_VERSION=3.16
-ARG BREF_VERSION=1.7.5
+ARG BREF_VERSION=1.7.8
 
-FROM bref/extra-redis-php-${PHP_VERSION}:0.11.32 AS redis_extension
+FROM bref/extra-redis-php-${PHP_VERSION}:0.11.34 AS redis_extension
 
 FROM alpine:${ALPINE_VERSION} as tools-installer
 RUN apk add --no-cache curl gnupg
 
 FROM tools-installer as hcl2json
-ARG HCL2JSON_VERSION=0.3.4
-RUN curl -SsL https://github.com/tmccombs/hcl2json/releases/download/v${HCL2JSON_VERSION}/hcl2json_linux_amd64 > /usr/local/bin/hcl2json && \
+ARG HCL2JSON_VERSION=0.3.5
+RUN curl -SsL https://github.com/tmccombs/hcl2json/releases/download/${HCL2JSON_VERSION}/hcl2json_linux_amd64 > /usr/local/bin/hcl2json && \
   chmod 755 /usr/local/bin/hcl2json && \
   hcl2json -help
 
