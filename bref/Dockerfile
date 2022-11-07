@@ -1,8 +1,8 @@
 ARG PHP_VERSION=81
 ARG ALPINE_VERSION=3.16
-ARG BREF_VERSION=1.7.8
+ARG BREF_VERSION=1.7.11
 
-FROM bref/extra-redis-php-${PHP_VERSION}:0.11.34 AS redis_extension
+FROM bref/extra-redis-php-${PHP_VERSION}:0.11.35 AS redis_extension
 
 FROM alpine:${ALPINE_VERSION} as tools-installer
 RUN apk add --no-cache curl gnupg
