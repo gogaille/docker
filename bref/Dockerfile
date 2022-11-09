@@ -26,15 +26,19 @@ RUN curl -SsL https://github.com/phar-io/phive/releases/download/${PHIVE_VERSION
   gpg --verify /tmp/phive.phar.asc /usr/local/bin/phive && \
   chmod 755 /usr/local/bin/phive
 
-FROM bref/php-${PHP_VERSION}-fpm-dev:${BREF_VERSION}
+FROM alpine:${ALPINE_VERSION} as symfony-cli
+RUN apk add --no-cache curl bash && \
+  curl -sS https://get.symfony.com/cli/installer | bash
+
+FROM bref/php-${PHP_VERSION}:${BREF_VERSION}
 RUN mkdir /composer-cache && \
   chmod a+rw /composer-cache && \
   yum install -y unzip && \
   yum clean all
 ENV PATH=$PATH:/var:/var/task/bin \
   COMPOSER_CACHE_DIR=/composer-cache \
-  PHP_CS_FIXER_IGNORE_ENV=1 \
-  PHIVE_HOME=/tmp/phive
+  PHIVE_HOME=/tmp/phive \
+  PHP_INI_SCAN_DIR=/opt/bref/etc/php/conf.d:/var/task/php/conf.d:/var/task/php/conf.dev.d
 COPY entrypoint.sh /gogaille-entrypoint.sh
 COPY --from=composer:2.4 /usr/bin/composer /usr/local/bin/composer
 COPY --from=phive /usr/local/bin/phive /usr/local/bin/
@@ -43,5 +47,7 @@ COPY --from=hcl2json /usr/local/bin/hcl2json /usr/local/bin/
 COPY --from=jtc /usr/local/bin/jtc /usr/local/bin/
 COPY --from=redis_extension /opt/bref-extra/redis.so /opt/bref-extra/redis.so
 COPY --from=redis_extension /opt/bref/etc/php/conf.d/ext-redis.ini /opt/bref/etc/php/conf.d/ext-redis.ini
+COPY --from=symfony-cli /root/.symfony5/bin/symfony /usr/local/bin/symfony
 ENTRYPOINT [ "/gogaille-entrypoint.sh" ]
-CMD ["/opt/bin/php-fpm", "--nodaemonize", "--fpm-config", "/opt/bref/etc/php-fpm.conf", "-d", "opcache.validate_timestamps=1", "--force-stderr"]
+EXPOSE 8000
+CMD ["symfony", "local:server:start", "--no-tls", "--no-interaction", "--port=8000"]
