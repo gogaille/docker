@@ -26,10 +26,6 @@ RUN curl -SsL https://github.com/phar-io/phive/releases/download/${PHIVE_VERSION
   gpg --verify /tmp/phive.phar.asc /usr/local/bin/phive && \
   chmod 755 /usr/local/bin/phive
 
-FROM alpine:${ALPINE_VERSION} as symfony-cli
-RUN apk add --no-cache curl bash && \
-  curl -sS https://get.symfony.com/cli/installer | bash
-
 FROM bref/php-${PHP_VERSION}:${BREF_VERSION}
 RUN mkdir /composer-cache && \
   chmod a+rw /composer-cache && \
@@ -47,7 +43,7 @@ COPY --from=hcl2json /usr/local/bin/hcl2json /usr/local/bin/
 COPY --from=jtc /usr/local/bin/jtc /usr/local/bin/
 COPY --from=redis_extension /opt/bref-extra/redis.so /opt/bref-extra/redis.so
 COPY --from=redis_extension /opt/bref/etc/php/conf.d/ext-redis.ini /opt/bref/etc/php/conf.d/ext-redis.ini
-COPY --from=symfony-cli /root/.symfony5/bin/symfony /usr/local/bin/symfony
+COPY --from=ghcr.io/symfony-cli/symfony-cli:v5 /usr/local/bin/symfony /usr/local/bin/symfony
 ENTRYPOINT [ "/gogaille-entrypoint.sh" ]
 EXPOSE 8000
 CMD ["symfony", "local:server:start", "--no-tls", "--no-interaction", "--port=8000"]
