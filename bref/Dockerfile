@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.4
-ARG PHP_VERSION=81
+ARG PHP_VERSION=82
 ARG ALPINE_VERSION=3.16
-ARG BREF_VERSION=1.7.11
-ARG REDIS_EXTRA_VERSION=0.11.35
+ARG BREF_VERSION=1.7.15
+ARG REDIS_EXTRA_VERSION=0.12.2
 
 FROM bref/extra-redis-php-${PHP_VERSION}:${REDIS_EXTRA_VERSION} AS redis_extension
 
@@ -46,7 +46,7 @@ ENV PATH=$PATH:/var:/var/task/bin \
   PHIVE_HOME=/tmp/phive \
   PHP_INI_SCAN_DIR=/opt/bref/etc/php/conf.d:/var/task/php/conf.d:/var/task/php/conf.dev.d
 COPY entrypoint.sh /gogaille-entrypoint.sh
-COPY --from=composer:2.4 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.5 /usr/bin/composer /usr/local/bin/composer
 COPY --from=phive /usr/local/bin/phive /usr/local/bin/
 RUN phive --version
 COPY --from=hcl2json /usr/local/bin/hcl2json /usr/local/bin/
