@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.4
 ARG PHP_VERSION=82
 ARG ALPINE_VERSION=3.16
-ARG BREF_VERSION=1.7.16
-ARG REDIS_EXTRA_VERSION=0.12.2
+ARG BREF_VERSION=1.7.21
+ARG REDIS_EXTRA_VERSION=0.12.4
 
 FROM bref/extra-redis-php-${PHP_VERSION}:${REDIS_EXTRA_VERSION} AS redis_extension
 
@@ -10,7 +10,7 @@ FROM alpine:${ALPINE_VERSION} as tools-installer
 RUN apk add --no-cache curl gnupg
 
 FROM tools-installer as hcl2json
-ARG HCL2JSON_VERSION=0.3.5
+ARG HCL2JSON_VERSION=0.3.6
 RUN <<EOF ash -e
   curl -SsL https://github.com/tmccombs/hcl2json/releases/download/${HCL2JSON_VERSION}/hcl2json_linux_amd64 > /usr/local/bin/hcl2json
   chmod 755 /usr/local/bin/hcl2json
