@@ -10,7 +10,7 @@ FROM alpine:${ALPINE_VERSION} as tools-installer
 RUN apk add --no-cache curl gnupg
 
 FROM tools-installer as hcl2json
-ARG HCL2JSON_VERSION=0.3.6
+ARG HCL2JSON_VERSION=0.3.5
 RUN <<EOF ash -e
   curl -SsL https://github.com/tmccombs/hcl2json/releases/download/${HCL2JSON_VERSION}/hcl2json_linux_amd64 > /usr/local/bin/hcl2json
   chmod 755 /usr/local/bin/hcl2json
