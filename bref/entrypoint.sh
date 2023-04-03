@@ -3,4 +3,4 @@ set -e
 
 [ $(id -u) -eq 0 ] && update-ca-trust && cp /etc/ssl/certs/ca-bundle.trust.crt /opt/bref/ssl/cert.pem
 
-exec "$@"
+exec /bref-entrypoint.sh $@
