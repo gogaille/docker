@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.4
 ARG PHP_VERSION=82
 ARG ALPINE_VERSION=3.16
-ARG BREF_VERSION=1.7.22
-ARG REDIS_EXTRA_VERSION=0.12.4
+ARG BREF_VERSION=2
+ARG REDIS_EXTRA_VERSION=1.0.0
 
 FROM bref/extra-redis-php-${PHP_VERSION}:${REDIS_EXTRA_VERSION} AS redis_extension
 
@@ -34,7 +34,7 @@ RUN <<EOF ash -e
   chmod 755 /usr/local/bin/phive
 EOF
 
-FROM bref/php-${PHP_VERSION}:${BREF_VERSION}
+FROM bref/php-${PHP_VERSION}-fpm-dev:${BREF_VERSION}
 RUN <<EOF bash -e
   mkdir /composer-cache
   chmod a+rw /composer-cache
@@ -44,16 +44,17 @@ EOF
 ENV PATH=$PATH:/var:/var/task/bin \
   COMPOSER_CACHE_DIR=/composer-cache \
   PHIVE_HOME=/tmp/phive \
-  PHP_INI_SCAN_DIR=/opt/bref/etc/php/conf.d:/var/task/php/conf.d:/var/task/php/conf.dev.d
+  PHP_INI_SCAN_DIR=/opt/bref/etc/php/conf.d:/var/task/php/conf.d:/var/task/php/conf.dev.d \
+  LAMBDA_TASK_ROOT=/var/task \
+  HANDLER=public/index.php \
+  DOCUMENT_ROOT=public
 COPY entrypoint.sh /gogaille-entrypoint.sh
 COPY --from=composer:2.5 /usr/bin/composer /usr/local/bin/composer
 COPY --from=phive /usr/local/bin/phive /usr/local/bin/
 RUN phive --version
 COPY --from=hcl2json /usr/local/bin/hcl2json /usr/local/bin/
 COPY --from=jtc /usr/local/bin/jtc /usr/local/bin/
-COPY --from=redis_extension /opt/bref-extra/redis.so /opt/bref-extra/redis.so
+COPY --from=redis_extension /opt/bref/extensions/redis.so /opt/bref/extensions/redis.so
 COPY --from=redis_extension /opt/bref/etc/php/conf.d/ext-redis.ini /opt/bref/etc/php/conf.d/ext-redis.ini
-COPY --from=ghcr.io/symfony-cli/symfony-cli:v5 /usr/local/bin/symfony /usr/local/bin/symfony
 ENTRYPOINT [ "/gogaille-entrypoint.sh" ]
 EXPOSE 8000
-CMD ["symfony", "local:server:start", "--no-tls", "--no-interaction", "--port=8000"]
