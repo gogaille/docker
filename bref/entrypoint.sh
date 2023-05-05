@@ -5,6 +5,8 @@ set -e
 
 GGLL_LOCALHOST_IP=$(dig +short -t A ggll.localhost)
 
-echo "export GGLL_LOCALHOST_IP=$GGLL_LOCALHOST_IP" >> ~/.bashrc
+if [ id -u = 0 ]; then
+  echo "export GGLL_LOCALHOST_IP=$GGLL_LOCALHOST_IP" >> ~/.bashrc
+fi
 
 exec env GGLL_LOCALHOST_IP=$GGLL_LOCALHOST_IP /bref-entrypoint.sh "$@"
