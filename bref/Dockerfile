@@ -38,7 +38,7 @@ FROM bref/php-${PHP_VERSION}-fpm-dev:${BREF_VERSION}
 RUN <<EOF bash -e
   mkdir /composer-cache
   chmod a+rw /composer-cache
-  yum install -y unzip
+  yum install -y unzip bind-utils
   yum clean all
 EOF
 ENV PATH=$PATH:/var:/var/task/bin \
@@ -48,13 +48,13 @@ ENV PATH=$PATH:/var:/var/task/bin \
   LAMBDA_TASK_ROOT=/var/task \
   HANDLER=public/index.php \
   DOCUMENT_ROOT=public
-COPY entrypoint.sh /gogaille-entrypoint.sh
-COPY --from=composer:2.5 /usr/bin/composer /usr/local/bin/composer
-COPY --from=phive /usr/local/bin/phive /usr/local/bin/
+COPY --link entrypoint.sh /gogaille-entrypoint.sh
+COPY --link --from=composer:2.5 /usr/bin/composer /usr/local/bin/composer
+COPY --link --from=phive /usr/local/bin/phive /usr/local/bin/
 RUN phive --version
-COPY --from=hcl2json /usr/local/bin/hcl2json /usr/local/bin/
-COPY --from=jtc /usr/local/bin/jtc /usr/local/bin/
-COPY --from=redis_extension /opt/bref/extensions/redis.so /opt/bref/extensions/redis.so
-COPY --from=redis_extension /opt/bref/etc/php/conf.d/ext-redis.ini /opt/bref/etc/php/conf.d/ext-redis.ini
+COPY --link --from=hcl2json /usr/local/bin/hcl2json /usr/local/bin/
+COPY --link --from=jtc /usr/local/bin/jtc /usr/local/bin/
+COPY --link --from=redis_extension /opt/bref/extensions/redis.so /opt/bref/extensions/redis.so
+COPY --link --from=redis_extension /opt/bref/etc/php/conf.d/ext-redis.ini /opt/bref/etc/php/conf.d/ext-redis.ini
 ENTRYPOINT [ "/gogaille-entrypoint.sh" ]
 EXPOSE 8000
