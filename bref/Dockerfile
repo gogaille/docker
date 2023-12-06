@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:1.4
-ARG PHP_VERSION=82
+ARG PHP_VERSION=83
 ARG ALPINE_VERSION=3.16
 ARG BREF_VERSION=2
 ARG REDIS_EXTRA_VERSION=1.0.0
 
-FROM bref/extra-redis-php-${PHP_VERSION}:${REDIS_EXTRA_VERSION} AS redis_extension
+FROM bref/extra-redis-php-${PHP_VERSION} AS redis_extension
 
 FROM alpine:${ALPINE_VERSION} as tools-installer
 RUN apk add --no-cache curl gnupg
@@ -49,7 +49,7 @@ ENV PATH=$PATH:/var:/var/task/bin \
   HANDLER=public/index.php \
   DOCUMENT_ROOT=public
 COPY --link entrypoint.sh /gogaille-entrypoint.sh
-COPY --link --from=composer:2.5 /usr/bin/composer /usr/local/bin/composer
+COPY --link --from=composer:2.6 /usr/bin/composer /usr/local/bin/composer
 COPY --link --from=phive /usr/local/bin/phive /usr/local/bin/
 RUN phive --version
 COPY --link --from=hcl2json /usr/local/bin/hcl2json /usr/local/bin/
